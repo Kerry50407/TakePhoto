@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.parse.FindCallback;
 import com.parse.Parse;
@@ -30,6 +31,7 @@ public class MainActivity extends Activity {
 	private static final int REQUEST_CODE_TAKE_PHOTO = 0;
 	private static final int REQUEST_CODE_GALLERY = 1;
 	private ImageView imageview1;
+	private LinearLayout linearLayout1;
 	private Uri extraOutput;
 
 	@Override
@@ -41,6 +43,7 @@ public class MainActivity extends Activity {
 				"9W4L6TXeaSHXuMZnHqwYKiAW987ieCPsRPPlidxl");
 
 		imageview1 = (ImageView) findViewById(R.id.imageView1);
+		linearLayout1 = (LinearLayout) findViewById(R.id.linearLayout1);
 		
 		loadPhotoFromParse();
 	}
@@ -148,6 +151,7 @@ public class MainActivity extends Activity {
 				for (ParseObject object : objects) {
 					ParseFile file = object.getParseFile("file");
 					Log.d("debug", file.getName());
+
 				}
 			}
 		});
