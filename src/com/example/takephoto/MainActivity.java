@@ -39,7 +39,7 @@ public class MainActivity extends Activity {
 				"9W4L6TXeaSHXuMZnHqwYKiAW987ieCPsRPPlidxl");
 
 		imageview1 = (ImageView) findViewById(R.id.imageView1);
-		getUri();
+
 	}
 
 	@Override
@@ -58,6 +58,8 @@ public class MainActivity extends Activity {
 		if (id == R.id.action_settings) {
 			return true;
 		} else if (id == R.id.action_take_photo) {
+
+			extraOutput = getUri();
 			Intent intent = new Intent();
 			intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -79,8 +81,10 @@ public class MainActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 		if ((requestCode == REQUEST_CODE_TAKE_PHOTO)) {
-			Bitmap bitmap = data.getParcelableExtra("data");
-			imageview1.setImageBitmap(bitmap);
+			// Bitmap bitmap = data.getParcelableExtra("data");
+			// imageview1.setImageBitmap(bitmap);
+
+			imageview1.setImageURI(extraOutput);
 			saveToParse(extraOutput);
 		} else if ((requestCode == REQUEST_CODE_GALLERY)) {
 			Uri selectImageUri = data.getData();
@@ -98,15 +102,15 @@ public class MainActivity extends Activity {
 		File file2 = new File(file, "image.png");
 		return Uri.fromFile(file2);
 	}
-	
+
 	private byte[] uriToBytes(Uri uri) {
 		try {
 			InputStream is = getContentResolver().openInputStream(uri);
 			ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-			
+
 			byte[] buffer = new byte[1024];
 			int len = 0;
-			while((len = is.read(buffer)) != -1) {
+			while ((len = is.read(buffer)) != -1) {
 				byteBuffer.write(buffer, 0, len);
 			}
 			return byteBuffer.toByteArray();
@@ -116,12 +120,11 @@ public class MainActivity extends Activity {
 		return null;
 	}
 
-
 	private void saveToParse(Uri uri) {
 		byte[] bytes = uriToBytes(uri);
 		final ParseFile file = new ParseFile("photo.png", bytes);
 		file.saveInBackground(new SaveCallback() {
-			
+
 			@Override
 			public void done(ParseException e) {
 				// TODO Auto-generated method stub
